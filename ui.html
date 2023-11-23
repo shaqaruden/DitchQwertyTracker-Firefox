@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>DitchQwerty Tracker</title>
+    <script defer src="alpine.min.js"></script>
+    <style>
+      body,
+      html {
+        padding: 0;
+        margin: 0;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse; /* subtle shadow for depth */
+        border-radius: 6px;
+        overflow: hidden;
+      }
+
+      thead {
+        color: white;
+        font-weight: 500;
+        text-transform: uppercase;
+      }
+
+      th,
+      td {
+        padding: 0 8px;
+        text-align: left;
+      }
+
+      th {
+        font-size: 14px;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+      }
+
+      th td {
+        height: 55px;
+        font-weight: 700;
+      }
+
+      td {
+        height: 51px;
+        font-size: 14px;
+      }
+
+      tr,
+      tr {
+        border: 0;
+      }
+
+      /* Base Button Styles */
+      button {
+        padding: 10px 20px;
+        border: none;
+        border-radius: 4px;
+        font-size: 16px;
+        text-transform: uppercase;
+        cursor: pointer;
+        display: block;
+        width: 100%;
+        transition: background-color, color, 0.3s, box-shadow 0.3s;
+        outline: none;
+      }
+
+      .divide-y > :not([hidden]) ~ :not([hidden]) {
+        --tw-divide-y-reverse: 0;
+        border-top-width: calc(1px * calc(1 - var(--tw-divide-y-reverse)));
+        border-bottom-width: calc(1px * var(--tw-divide-y-reverse));
+        border-color: rgba(255, 255, 255, 0.2);
+      }
+
+      .divide-solid > :not([hidden]) ~ :not([hidden]) {
+        border-style: solid;
+      }
+
+      /* Light Mode Styles */
+      @media (prefers-color-scheme: light) {
+        body {
+          background-color: #fff;
+          color: #333;
+        }
+
+        button {
+          background-color: #ffc107; /* Material Purple 500 */
+          color: white;
+          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.24);
+        }
+
+        button:hover {
+          background-color: #ffa000; /* Material Purple 700 */
+          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.24);
+        }
+
+        button:active {
+          background-color: #ff9800; /* Material Teal 200 */
+          color: #fff;
+        }
+      }
+
+      /* Dark Mode Styles */
+      @media (prefers-color-scheme: dark) {
+        body {
+          background-color: #040f15;
+          color: #fff;
+        }
+
+        th,
+        td {
+          border-color: #777; /* adjust border color for dark mode */
+        }
+
+        button {
+          background-color: #42a5f5; /* Material Purple 200 */
+          color: rgba(255, 255, 255, 1); /* Material Grey 900 */
+          box-shadow: 0 2px 4px rgba(255, 255, 255, 0.24);
+        }
+
+        button:hover {
+          background-color: #1976d2; /* Material Purple 700 */
+          color: #fff;
+          box-shadow: 0 4px 8px rgba(255, 255, 255, 0.24);
+        }
+
+        button:active {
+          background-color: #2196f3; /* Material Purple 500 */
+          color: #fff;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div
+      style="min-width: 400px"
+      x-data="exerciseDataHandler()"
+      x-init="fetchData"
+    >
+      <table cellspacing="0" cellpadding="0">
+        <thead>
+          <tr>
+            <td>Date</td>
+            <td>Accuracy</td>
+            <td>WPM</td>
+            <td>Time</td>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-solid">
+          <template x-for="data in exerciseData" :key="data.datetime">
+            <tr>
+              <td x-text="data.formattedDatetime"></td>
+              <td x-text="`${data.accuracy}%`"></td>
+              <td x-text="data.wpm"></td>
+              <td x-text="formatTime(data.time)"></td>
+            </tr>
+          </template>
+        </tbody>
+      </table>
+      <div style="padding: 8px; display: flex; gap: 8px">
+        <button x-on:click="collectData">Collect Data</button>
+        <button x-on:click="confirmClearData">Clear Data</button>
+      </div>
+    </div>
+
+    <script src="ui.js"></script>
+  </body>
+</html>
